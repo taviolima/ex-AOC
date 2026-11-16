@@ -1,0 +1,31 @@
+.data
+resultado: .space 400 
+
+.text
+.globl main
+
+main: 
+
+la $s0, resultado #s0 aponta para o endereço
+
+loop: 
+li $v0, 5 #ler um numero inteiro
+syscall #numero digitado fica em s0
+move $s1, $v0 #guarda o numero digitado em s1
+beq $s1, $zero, fim #compara conteudo de s1 com 0, se for igual salta para o fim, senão continua.
+add $s2, $s1, $s1 # armazena em s2 a soma de s1 com ele mesmo no loop
+sw $s2, 0 ($s0) #coloca conteudo de s2 no primeiro elementyo da memoria
+
+li $v0, 1 #serviço 1: imprime inteiro
+move $a0, $s2 #mover para a0 oq estava em s2
+syscall #imprime o conteudo de a0
+
+addi $s0, $s0, 4 #pula pra proxima posição da memoria
+
+
+j loop
+
+fim:
+
+li $v0, 10 #encerrar programa
+syscall
